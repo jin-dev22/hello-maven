@@ -23,4 +23,16 @@
   		and 
   		no = #{no}
   </select>
+  
+  <update id="updateStudent" parameterType="student"><!-- resultType이 아니었음 -->
+  		update student
+  		set name = #{name}, tel = #{tel}, updated_at = sysdate
+  		where no = #{no} and deleted_at is null
+  </update>
+  
+  <update id="deleteStudent">
+ 		update student
+  		set deleted_at = sysdate
+  		where no = #{no}
+  </update>
 </mapper>

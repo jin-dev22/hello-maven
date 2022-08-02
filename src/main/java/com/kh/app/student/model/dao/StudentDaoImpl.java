@@ -28,4 +28,14 @@ public class StudentDaoImpl implements StudentDao {
 	public Student selectOneStudent(SqlSession sqlSession, int no) {
 		return sqlSession.selectOne("student.selectOneStudent", no);
 	}
+	
+	@Override
+	public int updateStudent(SqlSession sqlSession, Student stdt) {
+		return sqlSession.update("student.updateStudent", stdt);
+	}
+	
+	@Override
+	public int deleteStudent(SqlSession sqlSession, int no) {
+		return sqlSession.update("student.deleteStudent", no);
+	}
 }

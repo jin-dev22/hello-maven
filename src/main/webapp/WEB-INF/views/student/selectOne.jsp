@@ -71,8 +71,46 @@ table.tbl-student tr:last-of-type td:first-child{text-align:center;}
         </form>
     </div>
 	<script>
-		
+		function deleteStudent(){
+			const frm = document.studentUpdateFrm;
+			const no = frm.no.value;
+			$.ajax({
+				url: '${pageContext.request.contextPath}/student/studentDelete.do',
+				data:{no},
+				success(result){
+					if(result>0){
+						alert("학생정보삭제 성공");
+						frm.reset();
+					}
+					else{
+						alert("학생정보삭제 실패");
+					}
+				}
+			});
+		};
 	
+		function updateStudent(){
+			const frm = document.studentUpdateFrm;
+			const no = frm.no.value;
+			const name = frm.name.value;
+			const tel = frm.tel.value;
+			$.ajax({
+				url: '${pageContext.request.contextPath}/student/studentUpdate.do',
+				method: 'GET',
+				data:{no, name, tel},
+				success(result){
+					if(result>0){
+						alert("정보수정 성공");
+					}
+					else{
+						alert("정보수정 실패");
+					}
+				},
+				error: console.log
+				
+			});
+		}
+		
 		document.studentSearchFrm.addEventListener('submit', (e)=>{
 			e.preventDefault();
 			const no = e.target.no.value;
