@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="student">
+  <!-- <insert id="insertStudent" parameterType="com.kh.app.student.model.dto.Student">풀네임으로 적어줘야됨 -->
+  <insert id="insertStudent" parameterType="student"><!-- config에서 별칭등록하기 -->
+  	insert into student (no, name, tel) values (seq_student_no.nextval, #{name}, #{tel})
+  </insert><!-- #{} = OGNL방식 -->
+  
+  <insert id="insertStudentMap" parameterType="map"><!-- 자주사용하는 클래스는 별칭이 등록되어있음. parameterType은 생략해도 작동함. 그냥 생략하기 -->
+  	insert into student (no, name, tel) values (seq_student_no.nextval, #{name}, #{tel})
+  </insert><!-- #{} = OGNL방식 -->
+  
+  <select id="getTotalCount" resultType="_int"><!-- select태그는resultType/resultMap속성 반드시 작성 -->
+  	select count(*) from student where deleted_at is null
+  </select>
+
+  <select id="selectOneStudent" resultType="student"><!-- 원래 풀네임이지만 별칭등록 해줌 -->
+  	select * 
+  	from student 
+  	where deleted_at is null 
+  		and 
+  		no = #{no}
+  </select>
+</mapper>
