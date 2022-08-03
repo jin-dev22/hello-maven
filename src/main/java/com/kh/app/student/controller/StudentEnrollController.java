@@ -12,14 +12,16 @@ import com.kh.app.common.AbstractController;
 import com.kh.app.student.model.dto.Student;
 import com.kh.app.student.model.service.StudentService;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
+
+@Log4j
+@RequiredArgsConstructor
 public class StudentEnrollController extends AbstractController {
+	//Lombok 사용해서 반복되는 log4j, studentService객체포함 생성자 코드 제거
+//	static final Logger log = Logger.getLogger(StudentEnrollController.class);
 	
-	static final Logger log = Logger.getLogger(StudentEnrollController.class);
-	private StudentService studentService;
-	
-	public StudentEnrollController(StudentService studentService) {
-		this.studentService = studentService;
-	}
+	private final StudentService studentService;//lombok RequiredArgsConst에서 인식할 수 있도록 final속성 추가
 	
 	@Override
 	public String doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -115,7 +115,8 @@ table.tbl-student tr:last-of-type td:first-child{text-align:center;}
 			e.preventDefault();
 			const no = e.target.no.value;
 			$.ajax({
-				url: '${pageContext.request.contextPath}/student/student.do',
+//				url: '${pageContext.request.contextPath}/student/student.do',
+				url: '${pageContext.request.contextPath}/student/studentMap.do',
 				data: {no},
 				success(student){
 					console.log(student);

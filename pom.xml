@@ -20,6 +20,14 @@
   </properties>
 
   <dependencies>
+  	<dependency><!-- lombok은 ide에 따로 설치도 해줘야 함 -->
+	    <groupId>org.projectlombok</groupId>
+	    <artifactId>lombok</artifactId>
+	    <version>1.18.24</version>
+	    <!-- scope: 어떤 생명주기에 사용할건지 설정해주는 태그 기본값은 compile -->
+	    <scope>provided</scope>
+	</dependency>
+  	
   	<dependency>
 	    <groupId>org.mybatis</groupId>
 	    <artifactId>mybatis</artifactId>

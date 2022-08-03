@@ -1,5 +1,6 @@
 package com.kh.app.student.model.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -30,6 +31,11 @@ public class StudentDaoImpl implements StudentDao {
 	}
 	
 	@Override
+	public Map<String, Object> selectOneStudentMap(SqlSession sqlSession, int no) {
+		return sqlSession.selectOne("student.selectOneStudentMap", no);
+	}
+	
+	@Override
 	public int updateStudent(SqlSession sqlSession, Student student) {
 		return sqlSession.update("student.updateStudent", student);
 	}
@@ -37,5 +43,15 @@ public class StudentDaoImpl implements StudentDao {
 	@Override
 	public int deleteStudent(SqlSession sqlSession, int no) {
 		return sqlSession.update("student.deleteStudent", no);
+	}
+	
+	@Override
+	public List<Student> selectStudentList(SqlSession sqlSession) {
+		return sqlSession.selectList("student.selectStudentList");
+	}
+	
+	@Override
+	public List<Map<String, Object>> selectStudentMapList(SqlSession sqlSession) {
+		return sqlSession.selectList("student.selectStudentMapList");
 	}
 }

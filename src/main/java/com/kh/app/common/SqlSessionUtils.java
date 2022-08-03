@@ -29,6 +29,13 @@ public class SqlSessionUtils {
 		//3. SqlSession찍어내기
 		sqlSession = factory.openSession(false);//auroCommit여부
 		
+//		try {//한줄로 작성하려면 이렇게 할 수 있음
+//            sqlSession = 
+//                new SqlSessionFactoryBuilder().build(Resources.getResourceAsStream(resource)).openSession(false);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+		
 		return sqlSession;
 	}
 
