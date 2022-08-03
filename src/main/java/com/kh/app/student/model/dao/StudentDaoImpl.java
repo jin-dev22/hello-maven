@@ -33,4 +33,9 @@ public class StudentDaoImpl implements StudentDao {
 	public int updateStudent(SqlSession sqlSession, Student student) {
 		return sqlSession.update("student.updateStudent", student);
 	}
+	
+	@Override
+	public int deleteStudent(SqlSession sqlSession, int no) {
+		return sqlSession.update("student.deleteStudent", no);
+	}
 }

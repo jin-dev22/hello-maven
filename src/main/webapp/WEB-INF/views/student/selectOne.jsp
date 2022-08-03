@@ -72,27 +72,44 @@ table.tbl-student tr:last-of-type td:first-child{text-align:center;}
     </div>
 	<script>
 		/* 실습문제풀이 */	
-		const updateStudent = () =>{
-			const frm = document.studentUpdateFrm;
-			const student = {
-					no: frm.no.value,
-					name: frm.name.value,
-					tel: frm.tel.value
-			};
-			console.log(student);
-			
-			$.ajax({
-				url: '${pageContext.request.contextPath}/student/studentUpdate.do',
-				data: student,
-				method: 'POST',
-				success(response){
-					console.log(response);
-					alert(response.msg);
-					frm.reset();
-				},
-				error: console.log
-			});
+		const deleteStudent = () => {
+		const frm = document.studentUpdateFrm;
+		
+		$.ajax({
+			url : '${pageContext.request.contextPath}/student/studentDelete.do',
+			data : {no : frm.no.value},
+			method : 'POST',
+			success(response){
+				console.log(response);
+				alert(response.msg);
+				location.reload();
+			},
+			error : console.log
+		});
+	}
+	
+	const updateStudent = () => {
+		const frm = document.studentUpdateFrm;
+		const student = {
+			no : frm.no.value,
+			name : frm.name.value,
+			tel : frm.tel.value
 		};
+		console.log(student);
+		
+		$.ajax({
+			url : '${pageContext.request.contextPath}/student/studentUpdate.do',
+			data : student,
+			method : 'POST',
+			success(response){
+				console.log(response);
+				alert(response.msg);
+				frm.reset();
+			},
+			error : console.log
+		});
+		
+	};
 	
 		document.studentSearchFrm.addEventListener('submit', (e)=>{
 			e.preventDefault();

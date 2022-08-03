@@ -29,4 +29,9 @@
   	set name = #{name}, tel = #{tel}, updated_at = sysdate
   	where deleted_at is null and no = #{no}
   </update>
+  <update id="deleteStudent">
+  update   student
+  set deleted_at = sysdate 
+  where no = #{no} 
+  </update>
 </mapper>

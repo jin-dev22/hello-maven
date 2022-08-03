@@ -79,4 +79,21 @@ public class StudentServiceImpl implements StudentService{
 		
 		return result;
 	}
+	
+	@Override
+	public int deleteStudent(int no) {
+		SqlSession sqlSession = getSqlSession();
+		int result = 0;
+		try {
+			result = studentDao.deleteStudent(sqlSession, no);
+			sqlSession.commit();
+		} catch (Exception e) {
+			sqlSession.rollback();
+			throw e;
+		} finally {
+			sqlSession.close();
+		}
+		
+		return result;
+	}
 }

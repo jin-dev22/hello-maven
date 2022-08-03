@@ -15,12 +15,11 @@ import com.kh.app.common.AbstractController;
 import com.kh.app.student.model.dto.Student;
 import com.kh.app.student.model.service.StudentService;
 
-public class StudentUpdateController extends AbstractController{
-	static final Logger log = Logger.getLogger(StudentUpdateController.class);
+public class StudentDeleteController extends AbstractController {
+	static final Logger log = Logger.getLogger(StudentDeleteController.class);
 	private StudentService studentService;
-
-	public StudentUpdateController(StudentService studentService) {
-		super();
+	
+	public StudentDeleteController(StudentService studentService) {
 		this.studentService = studentService;
 	}
 	
@@ -29,21 +28,15 @@ public class StudentUpdateController extends AbstractController{
 			throws ServletException, IOException {
 		// 1. 사용자입력값 처리
 		int no = Integer.parseInt(request.getParameter("no"));
-		String name = request.getParameter("name");
-		String tel = request.getParameter("tel");
-		Student student = new Student();
-		student.setNo(no);
-		student.setName(name);
-		student.setTel(tel);
-		log.debug(student);
+		log.debug(no);
 		
 		// 2. 업무로직
-		int result = studentService.updateStudent(student);
+		int result = studentService.deleteStudent(no);
 		
 		// 3. json응답 처리
 		response.setContentType("application/json; charset=utf-8");
 		Map<String, Object> map = new HashMap<>();
-		map.put("msg", "학생정보를 성공적으로 수정했습니다.");
+		map.put("msg", "학생정보를 성공적으로 삭제했습니다.");
 		new Gson().toJson(map, response.getWriter());
 		
 		return null;

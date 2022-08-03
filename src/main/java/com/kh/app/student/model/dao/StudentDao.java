@@ -18,4 +18,6 @@ public interface StudentDao {
 
 	int updateStudent(SqlSession sqlSession, Student student);
 
+	int deleteStudent(SqlSession sqlSession, int no);
+
 }
