@@ -39,3 +39,25 @@ deleted_at = sysdate
 where no =3;
 
 commit;
+
+-- kh계정의 데이터 사용하기
+select * from web.student;--원래는 테이블 풀네임 이렇게 적어주는데 계정에 생성된 테이블은 생략가능.
+select * from kh.employee;
+select * from kh.department;
+select * from kh.job;
+
+-- kh계정으로 select 권한 부여
+grant select on kh.employee to web;
+grant select on kh.department to web;
+grant select on kh.job to web;
+
+--관리자 계정에서 create synonym권한 부여하기
+grant create synonym to web;
+-- synonym(동의어 객체) 생성하기
+create synonym emp for kh.employee;
+create synonym dept for kh.department;
+create synonym job for kh.job;
+
+select * from emp;
+select * from dept;
+select * from job;
