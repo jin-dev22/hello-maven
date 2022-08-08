@@ -3,8 +3,8 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="student">
-  <!-- <insert id="insertStudent" parameterType="com.kh.app.student.model.dto.Student">풀네임으로 적어줘야됨 -->
-  <insert id="insertStudent" parameterType="student"><!-- config에서 별칭등록하기 -->
+  <!-- <insert id="insertStudent" parameterType="com.kh.app.student.model.dto.Student">원래 풀네임으로 적어줘야됨 -->
+  <insert id="insertStudent" parameterType="student"><!-- config에서 별칭등록하면 간단하게 사용가능 -->
   	insert into student (no, name, tel) values (seq_student_no.nextval, #{name}, #{tel})
   </insert><!-- #{} = OGNL방식 -->
   
@@ -28,7 +28,7 @@
   
   <!-- 그냥 바로 student객체에 담아도 되지만 매핑하면 좀 더 다양한 기능을 사용할 수 있음 자료형 변경이라든가.. -->
   <!-- <resultMap type="student" id="studentDtoMap"> -->
-  	<!-- column은 대소문자 구분없음. property는 대소문자 구분 pk는 id태그-->
+  	<!-- column은 대소문자 구분없음. property는 대소문자 구분. pk는 id태그-->
   	<!-- <id column="no" property="no"/>
   	<result column="name" property="name"/>
   	<result column="tel" property="tel"/>
@@ -38,7 +38,7 @@
   <!-- </resultMap> -->
   
   
-  <select id="selectOneStudentMap" resultMap="studentMap"><!-- resultType하면 map키값들이 컬럼명그대로 대문자 처리된거 반환됨 -->
+  <select id="selectOneStudentMap" resultMap="studentMap"><!-- resultType=map하면 map키값들이 컬럼명그대로 대문자 처리된거 반환됨 -->
   	select * 
   	from student 
   	where deleted_at is null 

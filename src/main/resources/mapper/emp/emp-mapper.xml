@@ -3,5 +3,177 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="emp">
+	<select id="search3" resultMap="empMap">
+		select 
+			*
+		from(
+			select 
+				e.*,
+				(select job_name from job where job_code = e.job_code) job_name,
+				(select dept_title from dept where dept_id = e.dept_code) dept_title,
+				decode(substr(emp_no, 8, 1), '1', '남', '3', '남', '여') gender
+			from 
+				emp e
+			) e
+		<where>
+			<if test="jobCodes != null ">
+				e.job_code in 
+					<foreach collection="jobCodes" item="jCode" open="(" close=")" separator=",">
+						#{jCode}
+					</foreach>
+			</if>
+			<if test="chkdDeptList != null">
+				and
+				nvl(e.dept_code , 'D0')in<!-- 부서 미지정된 사원도 조회할 수 있도록하기 -->
+					<foreach collection="chkdDeptList" item="deptCode" open="(" close=")" separator=",">
+						#{deptCode}
+					</foreach>
+			</if>
+		</where>
+			
+	</select>
+
+	<!-- 검색 필터링 누적기능. -->
+	<select id="search2" resultMap="empMap">
+		select 
+			*
+		from(
+			select 
+				e.*,
+				decode(substr(emp_no, 8, 1), '1', '남', '3', '남', '여') gender
+			from 
+				emp e
+			) e
+			
+		<!-- mabatis에서 1=1과 비슷한 작동을 하려면 where절에서 where 지우고 where태그로 감싸기 
+			where태그는 앞부분이 없을때 쿼리 앞의 and, or제거해줌
+			내부 if문이 모두 false인 경우(where가 비어있는경우) where 키워드를 제거해줌
+		-->	
+		<!-- 
+		<where>
+			<if test="searchType != null and searchType != '' and searchKeyword != null and searchKeyword != ''">
+				${searchType} like '%'||#{searchKeyword}||'%'
+			</if>
+			<if test="gender != null">
+				and
+				gender = #{gender}
+			</if>
+			<if test="salary != null and salary != 0">
+				<choose>
+					<when test="salaryCompare != null and salaryCompare eq 'le'">
+						and
+						salary <![CDATA[ <= ]]> #{salary}
+					</when>
+					<when test="salaryCompare != null and salaryCompare eq 'ge'">
+						<![CDATA[
+						and
+						salary >= #{salary}
+						]]>
+					</when>
+					<otherwise>and salary = #{salary}</otherwise>
+				</choose>
+			</if>
+		</where> 
+		-->
+		where 
+			1 = 1<!-- 아무조건도 선택하지 않았을 경우 where절 오류 방지용 true구문 -->
+			<if test="searchType != null and searchType != '' and searchKeyword != null and searchKeyword != ''">
+				and
+				${searchType} like '%'||#{searchKeyword}||'%'
+			</if>
+			<if test="gender != null">
+				and
+				gender = #{gender}
+			</if>
+			<!-- xml예약어 < 예외처리하기 CDATA. 문제되는 문자만 포함하거나 전체 문자열 포함하거나. 취향차이 -->
+			<!-- 
+			<if test="salary != null and salary != 0">
+				<if test="salaryCompare != null and salaryCompare eq 'le'">				
+					and
+					salary <![CDATA[ <= ]]> #{salary}
+				</if>
+				<if test="salaryCompare != null and salaryCompare eq 'ge'">
+					<![CDATA[
+					and
+					salary >= #{salary}
+					]]>
+				</if>
+				<if test="salaryCompare == null">and salary = #{salary}</if>
+			</if> 
+			-->
+			
+			<!-- if, when의 test속성에는 &&  || <  >  <= >= 연산자 사용불가 
+									  and or lt gt le ge
+			-->
+			<if test="salary != null and salary != 0">
+				<choose>
+					<when test="salaryCompare != null and salaryCompare eq 'le'">
+						and
+						salary <![CDATA[ <= ]]> #{salary}
+					</when>
+					<when test="salaryCompare != null and salaryCompare eq 'ge'">
+						<![CDATA[
+						and
+						salary >= #{salary}
+						]]>
+					</when>
+					<otherwise>and salary = #{salary}</otherwise>
+				</choose>
+			</if>
+	</select>
+
+  <select id="search1" resultMap="empMap">
+  	select * 
+  	from emp
+  	where ${searchType} like '%' || #{searchKeyword} || '%' 
+  </select>
   
+  <select id="selectEmpList" resultMap="empMap">
+  	select * from emp order by emp_id
+  </select>
+  
+  <resultMap type="map" id="empMap">
+  	<id column="emp_id" property="id" />
+  	<result column="emp_name" property="empName"/>
+  	<result column="emp_no" property="empNo"/>
+  	<result column="gender" property="gender"/>
+  	<result column="email" property="email"/>
+  	<result column="phone" property="phone"/>
+  	<result column="dept_code" property="deptCode"/>
+  	<result column="dept_title" property="deptTitle"/>
+  	<result column="job_code" property="jobCode"/>
+  	<result column="job_name" property="jobName"/>
+  	<result column="sal_level" property="salLevel"/>
+  	<result column="salary" property="salary"/>
+  	<result column="bonus" property="bonus"/>
+  	<result column="manager_id" property="managerId"/>
+  	<result column="hire_date" property="hireDate"/>
+  	<result column="quit_yn" property="quitYn"/>
+  </resultMap>
+  
+  
+  <select id="selectJobList" resultMap="jobMap">
+  	select * from job
+  </select>
+  
+  <resultMap type="map" id="jobMap">
+  	<id column="job_code" property="jobCode"/>
+  	<result column="job_name" property="jobName"/>
+  </resultMap>
+  
+  <!-- 
+  <select id="selectDeptList" resultMap="deptMap">
+  	select * from dept
+  </select>
+  <resultMap type="map" id="deptMap">
+  	<id column="dept_id" property="deptCode"/>
+  	<result column="dept_title" property="deptTitle"/>
+  	<result column="location_id" property="locationId"/>
+  </resultMap> 
+  -->
+  
+  <select id="selectDeptList" resultType="map">
+  	select dept_id "deptCode", dept_title "deptTitle"
+  	from dept
+  </select>
 </mapper>

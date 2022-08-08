@@ -61,3 +61,17 @@ create synonym job for kh.job;
 select * from emp;
 select * from dept;
 select * from job;
+
+
+select *
+		from(
+			select 
+				e.*,
+				decode(substr(emp_no, 8, 1), '1', '남', '3', '남', '여') gender
+			from 
+				emp e
+		) e
+		where gender = '남';
+        
+        
+        

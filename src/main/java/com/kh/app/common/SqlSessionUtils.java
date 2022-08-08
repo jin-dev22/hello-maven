@@ -10,8 +10,9 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 public class SqlSessionUtils {
 
-	public static SqlSession getSqlSession() {
-		SqlSession sqlSession = null;
+	static SqlSessionFactory factory;
+	
+	static {//0805 factoryBuilder 하나만 만들엇 쓰도록 수정
 		String resource = "/mybatis-config.xml";
 		
 		//1. FactoryBuilder
@@ -24,11 +25,16 @@ public class SqlSessionUtils {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		SqlSessionFactory factory = builder.build(is);
-		
-		//3. SqlSession찍어내기
-		sqlSession = factory.openSession(false);//auroCommit여부
-		
+		factory = builder.build(is);
+	}
+	
+	public static SqlSession getSqlSession() {
+//		SqlSession sqlSession = null;
+//		
+//		
+//		//3. SqlSession찍어내기
+//		sqlSession = //auroCommit여부
+//		
 //		try {//한줄로 작성하려면 이렇게 할 수 있음
 //            sqlSession = 
 //                new SqlSessionFactoryBuilder().build(Resources.getResourceAsStream(resource)).openSession(false);
@@ -36,7 +42,7 @@ public class SqlSessionUtils {
 //            e.printStackTrace();
 //        }
 		
-		return sqlSession;
+		return factory.openSession(false);
 	}
 
 }

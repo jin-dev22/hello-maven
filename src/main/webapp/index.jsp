@@ -20,6 +20,8 @@
 	<h2>emp</h2>
 	<ul>
 		<li><a href="<c:url value="/emp/search1.do"/>">search1</a></li>
+		<li><a href="<c:url value="/emp/search2.do"/>">search2</a></li>
+		<li><a href="<c:url value="/emp/search3.do"/>">search3</a></li>
 	</ul>
 	<script src="${pageContext.request.contextPath}/js/jquery-3.6.0.js"></script>
 	<script>
